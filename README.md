@@ -27,7 +27,7 @@ This Python project provides tools for modeling, analyzing, and optimizing earth
 ## Usage
 
 ```python
-from grid import Grid
+from tools import *
 
 # Initialize and load data
 grid = Grid(name="test")
@@ -38,15 +38,16 @@ grid.calc_dist()
 qtt = grid.calc_qtt(cost_func='bilinear')
 
 # Build and visualize transport flows
-df_transports = grid.build_transports(threshold=0.05)
-grid.plot_arrows(qtt)
+df_transports = grid.build_transports()
+grid.plot_arrows()
 
 # Cluster transport flows
-df_clusters = grid.cluster_transports(n_clusters=3, state=42)
+df_clusters = grid.cluster_transports(n_clusters=3)
 grid.plot_clusters()
 
 # Surface and step visualization
 grid.calc_gridstep()
 grid.plot_grid_surface()
 grid.plot_cluster_steps()
+
 
