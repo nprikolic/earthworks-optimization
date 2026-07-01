@@ -98,6 +98,9 @@ def main():
     # ---- orderings ----------------------------------------------------------
     fa_order, fa_forced = dyn.face_advance_order(cut_cells, gs, z_precut,
                                                  z_design, gs_xy)
+    # CONTROL: plain greedy nearest-neighbor (drainage filter OFF)
+    nn_order, _ = dyn.face_advance_order(cut_cells, gs, z_precut, z_design,
+                                         gs_xy, drainage_filter=False)
     sp_order, _ = dyn.serpentine_order_3d(cut_cells)
     h_order, _ = dyn.hilbert_order_3d(cut_cells)
     rm_order = dyn.row_major_order(cut_cells)
@@ -115,6 +118,10 @@ def main():
     print(f"\nMachine repositioning travel (within-cluster ordering):")
     print(f"  face advance (ADOPTED)   : {L_face:9.1f} m "
           f"(forced steps: {fa_forced})")
+    print(f"  nearest-neighbor CONTROL : "
+          f"{dyn.path_length(cut_cells, nn_order):9.1f} m "
+          f"(drainage filter off; identical sequence: "
+          f"{bool(np.array_equal(fa_order, nn_order))})")
     print(f"  row-major (naive raster) : {L_rm:9.1f} m")
     print(f"  serpentine top-down      : {L_sp:9.1f} m")
     print(f"  Hilbert top-down         : {L_h:9.1f} m")

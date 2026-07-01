@@ -298,7 +298,8 @@ def serpentine_order_3d(cells, step=GRID_STEP, z_descending=True,
     return np.array(order_idx, dtype=int), np.array(lift_id, dtype=int)
 
 
-def face_advance_order(cells, gs, z_state0, z_design, gs_xy, step=GRID_STEP):
+def face_advance_order(cells, gs, z_state0, z_design, gs_xy, step=GRID_STEP,
+                       drainage_filter=True):
     """
     Drainage-safe face-advance excavation ordering (ADOPTED).
 
@@ -321,6 +322,9 @@ def face_advance_order(cells, gs, z_state0, z_design, gs_xy, step=GRID_STEP):
     z_design : ndarray -- design (final) full-site surface.
     gs_xy : dict -- (round(x,3), round(y,3)) -> row index into gs / z arrays.
     step : float -- grid spacing.
+    drainage_filter : bool -- if False, the drainability test is skipped and
+        the rule degenerates to plain greedy nearest-neighbor from the same
+        (lowest) seed cell: the unconstrained control reported in the paper.
 
     Returns (order_idx, n_forced) where n_forced = number of steps where no
     drainable candidate existed (0 = the whole sequence is drainage-safe).
@@ -342,6 +346,8 @@ def face_advance_order(cells, gs, z_state0, z_design, gs_xy, step=GRID_STEP):
     nbrs = [nbr_rows(x, y) for x, y in zip(X, Y)]
 
     def drains_if_cut(k):
+        if not drainage_filter:
+            return True
         zk = z_design[rows[k]]
         nb = nbrs[k]
         if len(nb) < 4:          # grid-boundary cell: drains off-site (exempt)
