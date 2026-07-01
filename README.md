@@ -11,20 +11,38 @@ Faculty of Civil Engineering, University of Belgrade
 |------|-------------|
 | `S1_pointvol.csv` | Example POINTVOL data (grid point pairs with elevations, Zlatibor Airport case) |
 | `S2_gridcell.csv` | Example GRIDCELL data (cut/fill volumes and areas per grid cell) |
+<<<<<<< HEAD
+| `S3_tools.py` | Python source implementing the allocation/clustering methodology (`Grid`, `Cost`) |
+| `S4_dynamics.py` | Python source implementing the execution-dynamics layer (drainage check, face-advance and alternative orderings) |
+| `reproduce.py` | Turn-key driver that regenerates Table 1 and Table 2 from S1/S2/S3 |
+| `reproduce_dynamics.py` | Turn-key driver that regenerates the sequencing and per-step drainage results (Fig. 3) from S1/S2/S3/S4 |
+=======
 | `S3_tools.py` | Python source implementing the methodology (`Grid`, `Cost`) |
 | `reproduce.py` | Turn-key driver that regenerates Table 1 and Table 2 from S1/S2/S3 |
+>>>>>>> c7512246ee53a12ad249b8fc46b5d696db3cda52
 
 ## Reproducing the paper's results
 
 ```bash
 pip install numpy pandas scipy scikit-learn
+<<<<<<< HEAD
+python reproduce.py            # Tables 1 and 2
+python reproduce_dynamics.py   # sequencing + per-step drainage (Fig. 3)
+=======
 python reproduce.py
+>>>>>>> c7512246ee53a12ad249b8fc46b5d696db3cda52
 ```
 
 This regenerates, from the released example data alone (no AutoCAD/GCM++ needed):
 
+<<<<<<< HEAD
+* **Table 1** — the clustered work plan (5 clusters, per-cluster haul distance, quantity and indicative cost),
+* **Table 2** — the optimal LP allocation versus the nearest-fill and greedy heuristics, and
+* **Fig. 3 numbers** — the drainage-safe face-advance sequencing of the largest cluster versus row-major, serpentine, Hilbert and random orderings (machine repositioning travel, per-step drainage pass rates, loaded-haul direction check).
+=======
 * **Table 1** — the clustered work plan (5 clusters, per-cluster haul distance, quantity and indicative cost), and
 * **Table 2** — the optimal LP allocation versus the nearest-fill and greedy heuristics.
+>>>>>>> c7512246ee53a12ad249b8fc46b5d696db3cda52
 
 Locked case parameters: `d_break = 100` m, `C1 = 0.03`, `C2 = 0.05`, `C3 = 5`, `k = 5`
 clusters (3 short + 2 long), `random_state = 0`, illustrative unit rate `$40/m^3`.
@@ -50,8 +68,14 @@ case, so only a small residual is sent to disposal and no borrow is required.
    (short-haul dozer / long-haul scraper + dozer).
 3. **Allocation** — linear-programming solution of the transportation problem (globally optimal).
 4. **Clustering** — k-means grouping of individual transports into spatially coherent work packages.
+<<<<<<< HEAD
+5. **Sequencing** — gridstep terrain model with a drainage-safe face-advance excavation
+   ordering steered by a per-step drainage check (`S4_dynamics.py`); serpentine, Hilbert,
+   row-major and random orderings are evaluated alternatives.
+=======
 5. **Sequencing** — gridstep terrain model with a 3-D Hilbert top-down traversal and a per-step
    drainage check (execution-dynamics layer; available from the corresponding author on request).
+>>>>>>> c7512246ee53a12ad249b8fc46b5d696db3cda52
 
 ## Requirements
 
